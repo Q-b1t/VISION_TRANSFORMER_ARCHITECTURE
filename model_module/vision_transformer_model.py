@@ -214,9 +214,5 @@ class Vit(nn.Module):
             out_features = self.num_classes
         )
     )
-  def forward(self,x):
-    feature_patches = self.image_patcher(x)
-    encoder_output = self.transformer_encoder(feature_patches)
-    logits = self.classifier(encoder_output)
-    return logits
-
+  def forward(self,x): # operator fusion optimized
+    return self.classifier(self.transformer_encoder(self.image_patcher(x)))
