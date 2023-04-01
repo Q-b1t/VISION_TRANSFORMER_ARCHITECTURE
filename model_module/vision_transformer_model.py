@@ -215,4 +215,4 @@ class Vit(nn.Module):
         )
     )
   def forward(self,x): # operator fusion optimized
-    return self.classifier(self.transformer_encoder(self.image_patcher(x)))
+    return self.classifier(self.transformer_encoder(self.image_patcher(x))[:,0])
