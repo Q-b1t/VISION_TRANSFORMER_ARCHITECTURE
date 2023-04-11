@@ -1,7 +1,3 @@
-
-import torch
-import torch.nn as nn
-
 class PatcherModule(nn.Module):
   def __init__(self,img_shape,patch_size = 16,embedding_dim=768):
     super().__init__()
@@ -28,7 +24,7 @@ class PatcherModule(nn.Module):
 
     self.class_token = nn.Parameter(
         data = torch.rand(
-            self.batch_size,1,self.embedding_dim
+            1,1,self.embedding_dim
         ),
         requires_grad = True
     )
@@ -47,7 +43,11 @@ class PatcherModule(nn.Module):
 
     flattened_sequence = self.flattener(feature_maps).permute(0, 2, 1) 
 
-    patch_embedding_class_token = torch.cat([self.class_token,flattened_sequence],dim = 1)
+    #patch_embedding_class_token = torch.cat([self.class_token,flattened_sequence],dim = 1)
+
+    batch_size = flattened_sequence.shape[0]
+    class_token = self.class_token.expand(batch_size,-1,-1)
+    patch_embedding_class_token = torch.cat([class_token,flattened_sequence],dim = 1)
 
     patch_and_position_embedding = patch_embedding_class_token + self.positional_encoding
     return patch_and_position_embedding
