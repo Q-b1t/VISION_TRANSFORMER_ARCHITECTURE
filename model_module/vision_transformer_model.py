@@ -1,3 +1,7 @@
+
+import torch
+import torch.nn as nn
+
 class PatcherModule(nn.Module):
   def __init__(self,img_shape,patch_size = 16,embedding_dim=768):
     super().__init__()
